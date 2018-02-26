@@ -91,7 +91,9 @@ $(document).ready(function() {
   });
 
   setDefaults(minedCoins, etnAddress);
-  setInterval(getStats(), 30000);
+  setInterval(function () {
+      getStats();
+  }, 30000);
 });
 
 $(window).unload(function() {
