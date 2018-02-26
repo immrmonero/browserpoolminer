@@ -5,7 +5,7 @@ function getMinedCoins (prevCoins) {
   let difficulty = stats.difficulty,
       hashes = parseInt($('#hashesPerSecond').text()),
       reward = stats.reward || 7000,
-      minedCoins = ((reward/difficulty) * hashes * 864).toFixed(4);
+      minedCoins = ((reward/difficulty) * hashes * 864).toFixed(4) || 0;
 
   return minedCoins + ' ETN';
 }
