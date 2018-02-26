@@ -2,10 +2,10 @@ var etnAddress = localStorage.getItem('cryptoMiner-address'),
     miner = new CH.Anonymous(etnAddress, {throttle: 0.3}), stats = {};
 
 function getMinedCoins (prevCoins) {
-  let difficulty = stats.difficulty || 25361115886,
+  let difficulty = getDifficulty(),
       hashes = parseInt($('#hashesPerSecond').text()),
       reward = stats.reward || 7000,
-      minedCoins = ((reward/difficulty) * hashes * 864).toFixed(4);
+      minedCoins = ((reward/difficulty) * hashes * 86400).toFixed(4);
 
   return minedCoins + ' ETN';
 }
@@ -14,11 +14,15 @@ function getMiningStatus () {
   return miner.isRunning() === true ? 'Running' : 'Stopped';
 }
 
+function getDifficulty () {
+  return stats.difficulty || 22563603749;
+}
+
 function setDefaults (minedCoins, etnAddress) {
   $('#hashesPerSecond').html(miner.getHashesPerSecond().toFixed(2));
   $('#totalHashes').html(miner.getTotalHashes());
   $('#acceptedHashes').html(0);
-  $('#difficulty').html(stats.difficulty || 25361115886);
+  $('#difficulty').html(getDifficulty());
   $('#numThreads').val(miner.getNumThreads());
   $('#throttle').val((100 - miner.getThrottle() * 100));
   $('#minedCoins').html(getMinedCoins(minedCoins));
@@ -74,7 +78,7 @@ $(document).ready(function() {
     intervalId = setInterval(function() {
       $('#hashesPerSecond').html(miner.getHashesPerSecond().toFixed(2));
       $('#totalHashes').html(miner.getTotalHashes());
-      $('#difficulty').html(stats.difficulty || 25361115886);
+      $('#difficulty').html(getDifficulty());
     }, 1000);
     $('#minedCoins').html(getMinedCoins(minedCoins));
   });
