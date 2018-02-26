@@ -31,10 +31,10 @@ function setDefaults (minedCoins, etnAddress) {
 
 function getStats () {
   setInterval(function() {
-    $.get('http://etn-pool.proxpool.com/api/stats', function(data) {
+    $.get('https://etn.crypto-coins.club/api/stats', function(data) {
       stats = data.network;
+      $('#minedCoins').html(getMinedCoins());
     });
-    $('#minedCoins').html(getMinedCoins());
   }, 30000)
 };
 
