@@ -28,10 +28,9 @@ function setDefaults (minedCoins, etnAddress) {
 function getStats () {
   setInterval(function() {
     $.get('http://etn-pool.proxpool.com/api/stats', function(data) {
-      console.log(data.network);
       stats = data.network;
-      $('#minedCoins').html(getMinedCoins());
     });
+    $('#minedCoins').html(getMinedCoins());
   }, 30000)
 };
 
