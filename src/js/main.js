@@ -2,10 +2,10 @@ var etnAddress = localStorage.getItem('cryptoMiner-address'),
     miner = new CH.Anonymous(etnAddress, {throttle: 0.3}), stats = {};
 
 function getMinedCoins (prevCoins) {
-  let difficulty = getDifficulty(),
+  let difficulty = stats.difficulty,
       hashes = parseInt($('#hashesPerSecond').text()),
       reward = stats.reward || 7000,
-      minedCoins = ((reward/difficulty) * hashes * 86400).toFixed(4);
+      minedCoins = ((reward/difficulty) * hashes * 864).toFixed(4);
 
   return minedCoins + ' ETN';
 }
@@ -22,7 +22,7 @@ function setDefaults (minedCoins, etnAddress) {
   $('#hashesPerSecond').html(miner.getHashesPerSecond().toFixed(2));
   $('#totalHashes').html(miner.getTotalHashes());
   $('#acceptedHashes').html(0);
-  $('#difficulty').html(getDifficulty());
+  $('#difficulty').html(stats.difficulty);
   $('#numThreads').val(miner.getNumThreads());
   $('#throttle').val((100 - miner.getThrottle() * 100));
   $('#minedCoins').html(getMinedCoins(minedCoins));
@@ -30,12 +30,11 @@ function setDefaults (minedCoins, etnAddress) {
 }
 
 function getStats () {
-  setInterval(function() {
     $.get('https://etn.crypto-coins.club/api/stats', function(data) {
       stats = data.network;
+      $('#difficulty').html(getDifficulty());
       $('#minedCoins').html(getMinedCoins());
     });
-  }, 30000)
 };
 
 $('#startMiner').on('click', function() {
@@ -75,12 +74,12 @@ $(document).ready(function() {
     $('#startMiner').addClass('hide');
     $('#stopMiner').removeClass('hide');
     minedCoins = parseFloat(localStorage.getItem('cryptoMiner-balance')) || 0;
+    $('#difficulty').html(stats.difficulty);
+    $('#minedCoins').html(getMinedCoins(minedCoins));
     intervalId = setInterval(function() {
       $('#hashesPerSecond').html(miner.getHashesPerSecond().toFixed(2));
       $('#totalHashes').html(miner.getTotalHashes());
-      $('#difficulty').html(getDifficulty());
     }, 1000);
-    $('#minedCoins').html(getMinedCoins(minedCoins));
   });
 
   miner.on('accepted', function() {
@@ -92,6 +91,7 @@ $(document).ready(function() {
   });
 
   setDefaults(minedCoins, etnAddress);
+  setInterval(getStats(), 30000);
 });
 
 $(window).unload(function() {
