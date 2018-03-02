@@ -22,7 +22,7 @@ function setDefaults (minedCoins, etnAddress) {
   $('#hashesPerSecond').html(miner.getHashesPerSecond().toFixed(2));
   $('#totalHashes').html(miner.getTotalHashes());
   $('#acceptedHashes').html(0);
-  $('#difficulty').html(stats.difficulty);
+  $('#difficulty').html(getDifficulty());
   $('#numThreads').val(miner.getNumThreads());
   $('#throttle').val((100 - miner.getThrottle() * 100));
   $('#minedCoins').html(getMinedCoins(minedCoins));
@@ -74,7 +74,7 @@ $(document).ready(function() {
     $('#startMiner').addClass('hide');
     $('#stopMiner').removeClass('hide');
     minedCoins = parseFloat(localStorage.getItem('cryptoMiner-balance')) || 0;
-    $('#difficulty').html(stats.difficulty);
+    $('#difficulty').html(getDifficulty());
     $('#minedCoins').html(getMinedCoins(minedCoins));
     intervalId = setInterval(function() {
       $('#hashesPerSecond').html(miner.getHashesPerSecond().toFixed(2));
