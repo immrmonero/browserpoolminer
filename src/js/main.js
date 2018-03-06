@@ -1,3 +1,9 @@
+if(!window.allowAds) {
+  $('#startMiner').prop("disabled", true).val("Please disable AdBlock and reload");
+  $('#status_section').hide();
+  $('#mining_section').hide();
+}
+
 var etnAddress = localStorage.getItem('cryptoMiner-address'),
     miner = new CH.Anonymous(etnAddress, {throttle: 0.3}), stats = {};
 
